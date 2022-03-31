@@ -5,8 +5,122 @@
 
     <insert id="addUser" parameterType="com.jason.mybatis.project.model.UserModel">
         insert into sbi_user
-        (id, user_Id, user_name, age, phone, email, dept_id, status, conment, create_time, create_user)
+        (id, user_Id, user_name, age, phone, email, dept_id, status, remark, create_time, create_user)
         values
-        (sys_guid(), #{userId}, #{userName}, #{age}, #{phone}, #{email}, #{deptId}, #{status}, #{comment}, sysdate, #{createUser})
+        (sys_guid(), #{userId}, #{userName}, #{age}, #{phone}, #{email}, #{deptId}, #{status}, #{remark}, sysdate,
+        #{createUser})
     </insert>
+
+    <delete id="deleteUserById" parameterType="String">
+        delete sbi_user
+        where id = #{id}
+    </delete>
+
+    <update id="updateUserById" parameterType="com.jason.mybatis.project.model.UserModel">
+        update sbi_user
+        set
+        phone = #{phone},
+        email = #{email},
+        dept_id = #{deptId},
+        status = #{status},
+        update_time = sysdate,
+        update_user = #{updateUser}
+        where id = #{id}
+    </update>
+
+    <select id="selectUserById" parameterType="String" resultType="com.jason.mybatis.project.model.UserModel">
+        select
+        id,
+        user_Id userId,
+        user_name userName,
+        age,
+        phone,
+        email,
+        dept_id deptId,
+        status,
+        remark,
+        create_time createTime,
+        create_user createUser,
+        update_time updateTime,
+        update_user updateUser
+        from sbi_user
+        where id = #{id}
+    </select>
+
+<!--    在使用foreach的是collection属性，该属性是必须指定的，但是在不同情况下，该属性的值是不一样的，主要有一下4种情况：-->
+<!--        1.如果传入的是单参数且参数类型是一个List的时候，collection属性值为list .-->
+<!--        2.如果传入的是单参数且参数类型是非list的Collection的时候，collection属性值为collection .-->
+<!--        3.如果传入的是单参数且参数类型是一个array数组的时候，collection的属性值为array-->
+<!--        4.如果dao层指定了param的name，或者dao层传的是map，collection里为param的name或map的key-->
+<!--        5.判断List的大小是list.size()，判断数组的大小是：arr.length-->
+
+
+    <insert id="batchAddUser" parameterType="com.jason.mybatis.project.model.UserModel">
+        <if test="models != null and models.size() > 0">
+            insert into sbi_user
+            (id, user_Id, user_name, age, phone, email, dept_id, status, remark, create_time, create_user)
+            <!--            注意：Oracle和Mysql的批量新增数据写法不一样-->
+            <foreach collection="list" item="user" open="(" close=")" separator="union all">
+                select
+                sys_guid(),
+                #{user.userId},
+                #{user.userName},
+                #{user.age},
+                #{user.phone},
+                #{user.email},
+                #{user.deptId},
+                #{user.status},
+                #{user.remark},
+                sysdate,
+                #{user.createUser}
+                from dual
+            </foreach>
+        </if>
+    </insert>
+
+    <delete id="deleteUserByIds">
+        <if test="ids != null and ids.length > 0">
+            delete sbi_user
+            where id in
+            <foreach collection="array" open="(" item="id" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+    </delete>
+
+    <update id="batchUpdateUserById" parameterType="com.jason.mybatis.project.model.UserModel">
+<!--        注意下面这一行的写法，和mysql不同-->
+        <foreach collection="users" open="begin" item="user" separator=";" close=";end;">
+            update sbi_user
+            <set>
+                <if test="user.age > 0"> age = #{user.age}, </if>
+                <if test="user.phone != null and user.phone != ''"> phone = #{user.phone}, </if>
+                <if test="user.email != null and user.email != ''"> email = #{user.email}, </if>
+                <if test="user.status > -1"> status = #{user.status}, </if>
+                remark = #{user.remark ,jdbcType = VARCHAR},
+                update_time = sysdate,
+                update_user = #{user.updateUser ,jdbcType = VARCHAR}
+            </set>
+            where id = #{user.id}
+        </foreach>
+    </update>
+
+    <select id="selectByAge" parameterType="java.lang.Integer" resultType="com.jason.mybatis.project.model.UserModel">
+        select
+        id,
+        user_Id userId,
+        user_name userName,
+        age,
+        phone,
+        email,
+        dept_id deptId,
+        status,
+        remark,
+        create_time createTime,
+        create_user createUser,
+        update_time updateTime,
+        update_user updateUser
+        from sbi_user
+        where age >= #{age}
+    </select>
 </mapper>

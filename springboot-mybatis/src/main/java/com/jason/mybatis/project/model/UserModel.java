@@ -17,30 +17,11 @@ public class UserModel {
     private String email; // 邮箱
     private String deptId; // 部门编号
     private int status; // 任职状态，0：离职，1:在职，2：观察，3：其他
-    private String comment; // 备注
+    private String remark; // 备注
     private Date createTime; // 创建时间
     private String createUser; // 创建人
     private Date updateTime; // 修改时间
     private String updateUser; // 修改人
-
-    @Override
-    public String toString() {
-        return "UserModel{" +
-                "id='" + id + '\'' +
-                ", userId='" + userId + '\'' +
-                ", userName='" + userName + '\'' +
-                ", age=" + age +
-                ", phone='" + phone + '\'' +
-                ", email='" + email + '\'' +
-                ", deptId='" + deptId + '\'' +
-                ", status=" + status +
-                ", comment='" + comment + '\'' +
-                ", createTime=" + createTime +
-                ", createUser='" + createUser + '\'' +
-                ", updateTime=" + updateTime +
-                ", updateUser='" + updateUser + '\'' +
-                '}';
-    }
 
     public String getId() {
         return id;
@@ -106,12 +87,12 @@ public class UserModel {
         this.status = status;
     }
 
-    public String getComment() {
-        return comment;
+    public String getRemark() {
+        return remark;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     public Date getCreateTime() {
