@@ -1,26 +1,176 @@
 [
   {
-    "id": "",
-    "userId": "update_name_01",
-    "userName": "修改名字01",
-    "age": 30,
-    "phone": "99999999999",
-    "email": "99999999999@186.com",
-    "deptId": "D006",
-    "status": "1",
-    "remark": "",
-    "createUser": "admin"
+    "id": null,
+    "deptId": "DEPT_001",
+    "deptName": "部门1",
+    "deptManager": "经理1",
+    "status": null,
+    "deptSrc": null,
+    "createTime": null,
+    "createUser": null,
+    "updateTime": null,
+    "updateUser": null,
+    "users": [
+      {
+        "id": null,
+        "userId": "PERSON_00001",
+        "userName": "张三1",
+        "age": 0,
+        "phone": null,
+        "email": null,
+        "deptId": "DEPT_001",
+        "status": 0,
+        "remark": null,
+        "createTime": null,
+        "createUser": null,
+        "updateTime": null,
+        "updateUser": null
+      }
+    ]
   },
   {
-    "id": "01E6B6A141E54AC196B69532BA5497DD",
-    "userId": "update_name_01",
-    "userName": "修改名字02",
-    "age": 30,
-    "phone": "88888888888",
-    "email": "88888888888@186.com",
-    "deptId": "D006",
-    "status": "1",
-    "remark": "",
-    "createUser": "admin"
+    "id": null,
+    "deptId": "DEPT_001",
+    "deptName": "部门1",
+    "deptManager": "经理1",
+    "status": null,
+    "deptSrc": null,
+    "createTime": null,
+    "createUser": null,
+    "updateTime": null,
+    "updateUser": null,
+    "users": [
+      {
+        "id": null,
+        "userId": "PERSON_00002",
+        "userName": "张三2",
+        "age": 0,
+        "phone": null,
+        "email": null,
+        "deptId": "DEPT_001",
+        "status": 0,
+        "remark": null,
+        "createTime": null,
+        "createUser": null,
+        "updateTime": null,
+        "updateUser": null
+      }
+    ]
+  },
+  {
+    "id": null,
+    "deptId": "DEPT_001",
+    "deptName": "部门1",
+    "deptManager": "经理1",
+    "status": null,
+    "deptSrc": null,
+    "createTime": null,
+    "createUser": null,
+    "updateTime": null,
+    "updateUser": null,
+    "users": [
+      {
+        "id": null,
+        "userId": "PERSON_00003",
+        "userName": "张三3",
+        "age": 0,
+        "phone": null,
+        "email": null,
+        "deptId": "DEPT_001",
+        "status": 0,
+        "remark": null,
+        "createTime": null,
+        "createUser": null,
+        "updateTime": null,
+        "updateUser": null
+      }
+    ]
+  },
+  {
+    "id": null,
+    "deptId": "DEPT_002",
+    "deptName": "部门2",
+    "deptManager": "经理2",
+    "status": null,
+    "deptSrc": null,
+    "createTime": null,
+    "createUser": null,
+    "updateTime": null,
+    "updateUser": null,
+    "users": [
+      {
+        "id": null,
+        "userId": "PERSON_00011",
+        "userName": "张三11",
+        "age": 0,
+        "phone": null,
+        "email": null,
+        "deptId": "DEPT_002",
+        "status": 0,
+        "remark": null,
+        "createTime": null,
+        "createUser": null,
+        "updateTime": null,
+        "updateUser": null
+      }
+    ]
+  },
+  {
+    "id": null,
+    "deptId": "DEPT_002",
+    "deptName": "部门2",
+    "deptManager": "经理2",
+    "status": null,
+    "deptSrc": null,
+    "createTime": null,
+    "createUser": null,
+    "updateTime": null,
+    "updateUser": null,
+    "users": [
+      {
+        "id": null,
+        "userId": "PERSON_00012",
+        "userName": "张三12",
+        "age": 0,
+        "phone": null,
+        "email": null,
+        "deptId": "DEPT_002",
+        "status": 0,
+        "remark": null,
+        "createTime": null,
+        "createUser": null,
+        "updateTime": null,
+        "updateUser": null
+      }
+    ]
+  },
+  {
+    "id": null,
+    "deptId": "DEPT_002",
+    "deptName": "部门2",
+    "deptManager": "经理2",
+    "status": null,
+    "deptSrc": null,
+    "createTime": null,
+    "createUser": null,
+    "updateTime": null,
+    "updateUser": null,
+    "users": [
+      {
+        "id": null,
+        "userId": "PERSON_00013",
+        "userName": "张三13",
+        "age": 0,
+        "phone": null,
+        "email": null,
+        "deptId": "DEPT_002",
+        "status": 0,
+        "remark": null,
+        "createTime": null,
+        "createUser": null,
+        "updateTime": null,
+        "updateUser": null
+      }
+    ]
   }
 ]

@@ -11,20 +11,20 @@ declare
 begin
     for i in 1 .. 50 loop
 
-            p_user_Id   := 'P_' || LPAD(i, 5, '0');
+            p_user_Id   := 'PERSON_' || LPAD(i, 5, '0');
             p_user_name := '张三' || i;
             p_age       := i;
 
             if i <= 10 then
-                p_dept_id := 'D001';
+                p_dept_id := 'DEPT_001';
             elsif 10 < i and i <= 20 then
-                p_dept_id := 'D002';
+                p_dept_id := 'DEPT_002';
             elsif 20 < i and i <= 30 then
-                p_dept_id := 'D003';
+                p_dept_id := 'DEPT_003';
             elsif 30 < i and i <= 40 then
-                p_dept_id := 'D004';
+                p_dept_id := 'DEPT_004';
             elsif 40 < i and i <= 50 then
-                p_dept_id := 'D005';
+                p_dept_id := 'DEPT_005';
             end if;
 
             insert into sbi_user

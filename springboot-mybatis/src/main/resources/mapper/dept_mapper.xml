@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 下午20:21:03 Author:WangChengHao -->
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jason.mybatis.project.dao.DeptMapper">
+
+    <resultMap id="deptResultMap" type="com.jason.mybatis.project.model.vo.DeptVo">
+        <id property="deptId" column="dept_id" javaType="String" jdbcType="VARCHAR"/>
+        <result property="id" column="d_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="deptName" column="dept_name" javaType="String" jdbcType="VARCHAR"/>
+        <result property="deptManager" column="dept_manager" javaType="String" jdbcType="VARCHAR"/>
+        <result property="status" column="status" javaType="String" jdbcType="CHAR"/>
+        <result property="deptSrc" column="dept_desc" javaType="String" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" javaType="java.util.Date" jdbcType="DATE"/>
+        <result property="createUser" column="create_user" javaType="String" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="update_time" javaType="java.util.Date" jdbcType="DATE"/>
+        <result property="updateUser" column="update_user" javaType="String" jdbcType="VARCHAR"/>
+        <!--        配置一对多的关系：一个部门有多个员工-->
+        <collection property="users" column="dept_id" javaType="ArrayList" ofType="com.jason.mybatis.project.model.UserModel">
+            <id property="userId" column="user_id" javaType="String" jdbcType="VARCHAR"/>
+            <result property="id" column="u_id" javaType="String" jdbcType="VARCHAR"/>
+            <result property="deptId" column="dept_id" javaType="String" jdbcType="VARCHAR"/>
+            <result property="userName" column="user_name" javaType="String" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+
+
+    <select id="allDept" resultMap="deptResultMap">
+        select
+        a.id d_id,
+        a.dept_id,
+        a.dept_name,
+        a.dept_manager,
+        b.id u_id,
+        b.user_id,
+        b.dept_id,
+        b.user_name
+        from sbi_dept a left join sbi_user b on a.dept_id=b.dept_id
+    </select>
+</mapper>
