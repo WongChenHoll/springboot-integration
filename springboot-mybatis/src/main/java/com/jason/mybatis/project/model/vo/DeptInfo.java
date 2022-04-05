@@ -2,25 +2,19 @@ package com.jason.mybatis.project.model.vo;
 
 import com.jason.mybatis.project.model.UserModel;
 
-import java.util.Date;
-import java.util.List;
-
 /**
  * @author WongChenHoll
- * @date 2022-3-31 17:12
+ * @date 2022-4-5 14:51
  **/
-public class DeptVo {
+public class DeptInfo {
+
     private String id; // 主键ID，UUID
     private String deptId; // 部门编号
     private String deptName; //部门名称
     private String deptManager; //部门经理
     private String status; // 部门状态，1：现存部门，0：已经不存在的部门
     private String deptDesc; // 部门描述
-    private Date createTime; // 创建时间
-    private String createUser; // 创建人
-    private Date updateTime; // 修改时间
-    private String updateUser; // 修改人
-    private List<UserModel> users; // 本部门下所有的员工信息
+    private UserModel userInfo;
 
     public String getId() {
         return id;
@@ -70,43 +64,11 @@ public class DeptVo {
         this.deptDesc = deptDesc;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public UserModel getUserInfo() {
+        return userInfo;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(String createUser) {
-        this.createUser = createUser;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public String getUpdateUser() {
-        return updateUser;
-    }
-
-    public void setUpdateUser(String updateUser) {
-        this.updateUser = updateUser;
-    }
-
-    public List<UserModel> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<UserModel> users) {
-        this.users = users;
+    public void setUserInfo(UserModel userInfo) {
+        this.userInfo = userInfo;
     }
 }

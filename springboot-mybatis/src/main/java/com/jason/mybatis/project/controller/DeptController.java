@@ -1,5 +1,6 @@
 package com.jason.mybatis.project.controller;
 
+import com.jason.mybatis.project.model.vo.DeptInfo;
 import com.jason.mybatis.project.model.vo.DeptVo;
 import com.jason.mybatis.project.service.DeptService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,13 @@ public class DeptController {
     private DeptService deptService;
 
     @GetMapping("/allDept")
-    public List<DeptVo> allDept(){
+    public List<DeptVo> allDept() {
         return deptService.allDept();
+    }
+
+
+    @GetMapping("/deptInfo")
+    public List<DeptInfo> deptInfo() {
+        return deptService.deptInfo();
     }
 }

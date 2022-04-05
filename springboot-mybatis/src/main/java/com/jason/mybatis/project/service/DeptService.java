@@ -1,5 +1,6 @@
 package com.jason.mybatis.project.service;
 
+import com.jason.mybatis.project.model.vo.DeptInfo;
 import com.jason.mybatis.project.model.vo.DeptVo;
 
 import java.util.List;
@@ -10,4 +11,6 @@ import java.util.List;
  **/
 public interface DeptService {
     List<DeptVo> allDept();
+
+    List<DeptInfo> deptInfo();
 }

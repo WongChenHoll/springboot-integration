@@ -14,7 +14,7 @@ public class DeptModel {
     private String deptName; //部门名称
     private String deptManager; //部门经理
     private String status; // 部门状态，1：现存部门，0：已经不存在的部门
-    private String deptSrc; // 部门描述
+    private String deptDesc; // 部门描述
     private Date createTime; // 创建时间
     private String createUser; // 创建人
     private Date updateTime; // 修改时间
@@ -60,12 +60,12 @@ public class DeptModel {
         this.status = status;
     }
 
-    public String getDeptSrc() {
-        return deptSrc;
+    public String getDeptDesc() {
+        return deptDesc;
     }
 
-    public void setDeptSrc(String deptSrc) {
-        this.deptSrc = deptSrc;
+    public void setDeptDesc(String deptDesc) {
+        this.deptDesc = deptDesc;
     }
 
     public Date getCreateTime() {

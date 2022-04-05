@@ -4,20 +4,24 @@
 <mapper namespace="com.jason.mybatis.project.dao.DeptMapper">
 
     <resultMap id="deptResultMap" type="com.jason.mybatis.project.model.vo.DeptVo">
-        <id property="deptId" column="dept_id" javaType="String" jdbcType="VARCHAR"/>
-        <result property="id" column="d_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+<!--        <id property="deptId" column="dept_id" javaType="String" jdbcType="VARCHAR"/>-->
+<!--        <result property="id" column="d_id" javaType="java.lang.String" jdbcType="VARCHAR"/>-->
+        <id property="id" column="d_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="deptId" column="dept_id" javaType="String" jdbcType="VARCHAR"/>
         <result property="deptName" column="dept_name" javaType="String" jdbcType="VARCHAR"/>
         <result property="deptManager" column="dept_manager" javaType="String" jdbcType="VARCHAR"/>
         <result property="status" column="status" javaType="String" jdbcType="CHAR"/>
-        <result property="deptSrc" column="dept_desc" javaType="String" jdbcType="VARCHAR"/>
+        <result property="deptDesc" column="dept_desc" javaType="String" jdbcType="VARCHAR"/>
         <result property="createTime" column="create_time" javaType="java.util.Date" jdbcType="DATE"/>
         <result property="createUser" column="create_user" javaType="String" jdbcType="VARCHAR"/>
         <result property="updateTime" column="update_time" javaType="java.util.Date" jdbcType="DATE"/>
         <result property="updateUser" column="update_user" javaType="String" jdbcType="VARCHAR"/>
         <!--        配置一对多的关系：一个部门有多个员工-->
         <collection property="users" column="dept_id" javaType="ArrayList" ofType="com.jason.mybatis.project.model.UserModel">
-            <id property="userId" column="user_id" javaType="String" jdbcType="VARCHAR"/>
-            <result property="id" column="u_id" javaType="String" jdbcType="VARCHAR"/>
+<!--            <id property="userId" column="user_id" javaType="String" jdbcType="VARCHAR"/>-->
+<!--            <result property="id" column="u_id" javaType="String" jdbcType="VARCHAR"/>-->
+            <id property="id" column="u_id" javaType="String" jdbcType="VARCHAR"/>
+            <result property="userId" column="user_id" javaType="String" jdbcType="VARCHAR"/>
             <result property="deptId" column="dept_id" javaType="String" jdbcType="VARCHAR"/>
             <result property="userName" column="user_name" javaType="String" jdbcType="VARCHAR"/>
         </collection>
@@ -34,6 +38,43 @@
         b.user_id,
         b.dept_id,
         b.user_name
-        from sbi_dept a left join sbi_user b on a.dept_id=b.dept_id
+        from sbi_dept a left join sbi_user b on a.dept_id = b.dept_id
+    </select>
+
+
+    <resultMap id="deptInfoResultMap" type="com.jason.mybatis.project.model.vo.DeptInfo">
+        <id property="id" column="a_id"/>
+        <result property="deptId" column="dept_id"/>
+        <result property="deptName" column="dept_name"/>
+        <result property="deptManager" column="dept_manager"/>
+        <result property="status" column="status"/>
+        <result property="deptDesc" column="dept_desc"/>
+        <association property="userInfo" javaType="com.jason.mybatis.project.model.UserModel">
+            <id property="id" column="b_id"/>
+            <result property="userId" column="user_id"/>
+            <result property="userName" column="user_name"/>
+            <result property="age" column="age"/>
+            <result property="phone" column="phone"/>
+            <result property="email" column="email"/>
+            <result property="status" column="status"/>
+        </association>
+    </resultMap>
+
+    <select id="deptInfo" resultMap="deptInfoResultMap">
+        select
+        a.id a_id,
+        a.dept_id,
+        a.dept_name,
+        b.user_name dept_manager,
+        a.status,
+        a.dept_desc,
+        b.id b_id,
+        b.user_id,
+        b.user_name,
+        b.age,
+        b.phone,
+        b.email,
+        b.status
+        from sbi_dept a left join sbi_user b on a.dept_manager = b.user_id
     </select>
 </mapper>
