@@ -16,7 +16,7 @@ public class UserModel {
     private String phone; // 手机号/电话号码
     private String email; // 邮箱
     private String deptId; // 部门编号
-    private int status; // 任职状态，0：离职，1:在职，2：观察，3：其他
+    private String status; // 任职状态，0：离职，1:在职，2：观察，3：其他
     private String remark; // 备注
     private Date createTime; // 创建时间
     private String createUser; // 创建人
@@ -79,11 +79,11 @@ public class UserModel {
         this.deptId = deptId;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

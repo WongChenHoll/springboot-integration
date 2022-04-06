@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jason.mybatis.project.dao.DynamicSqlMapper">
+
+    <select id="queryUserInfo" parameterType="com.jason.mybatis.project.model.UserModel" resultType="com.jason.mybatis.project.model.UserModel">
+        select
+        id,
+        user_id userId,
+        user_name userName,
+        age,
+        phone,
+        email,
+        dept_id deptId,
+        status,
+        remark
+        from sbi_user
+<!--        使用where标签时，第一个条件中可以没有and连接符，也可以有但其他的最好都要有-->
+        <where>
+            <if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+            <if test="userName != null and userName != ''"> and user_name like '%'||#{userName}||'%' </if>
+        </where>
+    </select>
+
+    <select id="selectUserByUserIdOrUserNameOrAge" parameterType="com.jason.mybatis.project.model.UserModel" resultType="com.jason.mybatis.project.model.UserModel">
+        select
+        id,
+        user_id userId,
+        user_name userName,
+        age,
+        phone,
+        email,
+        dept_id deptId,
+        status,
+        remark
+        from sbi_user
+        <where>
+<!--            id is not null-->
+<!--            使用choose标签时，其作用是从下面4个条件中选择一个作为查询条件，类似于switch。-->
+<!--            如果第一个条件满足，则选择第一个查询条件。-->
+<!--            如果第一个查询条件不满足，则判断第二个查询条件是否满足，满足的话就选择第二个。-->
+<!--            以此类推，都不满足的话则选择otherwise标签的查询条件-->
+<!--            特别注意：如果所有的查询条件都是选择性的，也就是只选择其中一个的话，则不需要在每个条件中添加 and 连接符。-->
+<!--            如果在所有的查询条件中存在一定会有的条件，则下面每个选择条件中都要有 and 连接符-->
+            <choose>
+                <when test="userId != null and userId != ''"> user_id = #{userId} </when>
+                <when test="userName != null and userName != ''"> user_name like '%'||#{userName}||'%' </when>
+                <when test=" age > 0"> age = #{age} </when>
+                <otherwise> status = 1 </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <update id="updateUserById" parameterType="com.jason.mybatis.project.model.UserModel">
+        update sbi_user
+        <set>
+            <if test="userName != null and userName != ''"> user_name = #{userName}, </if>
+            <if test="age > 0"> age = #{age}, </if>
+            phone = #{phone, jdbcType=VARCHAR},
+            email = #{email, jdbcType=VARCHAR},
+            <if test="deptId != null and deptId != ''"> dept_id = #{deptId}, </if>
+            <if test="status != null and status != ''"> status = #{status}, </if>
+            remark = #{remark, jdbcType=VARCHAR},
+            update_time = sysdate,
+            update_user = #{updateUser, jdbcType=VARCHAR}
+        </set>
+        where id = #{id}
+    </update>
+    
+    <select id="selectUserLikeUserName" parameterType="java.lang.String" resultType="UserModel">
+        <bind name="pattern" value="'%'+userName+'%'"/>
+        select
+        id,
+        user_id userId,
+        user_name userName,
+        age,
+        phone,
+        email,
+        dept_id deptId,
+        status,
+        remark
+        from sbi_user
+        where user_name like #{pattern}
+    </select>
+
+
+</mapper>
