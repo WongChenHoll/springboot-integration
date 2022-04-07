@@ -88,3 +88,13 @@ comment on column SBI_DEPT.update_time
   is '修改时间';
 comment on column SBI_DEPT.update_user
   is '修改人';
+
+
+-- Create table
+create table ACCOUNT
+(
+    id    VARCHAR2(50),
+    name  VARCHAR2(50),
+    money NUMBER(5,2)
+)
+    tablespace TEST_DATA;
