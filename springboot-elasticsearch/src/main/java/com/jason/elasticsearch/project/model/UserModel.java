@@ -12,10 +12,13 @@ import java.util.Date;
  * @author WongChenHoll
  * @date 2022-4-13 星期三 15:26
  **/
-@Document(indexName = "jason_user")
+@Document(indexName = "jason_doc_10")
 public class UserModel {
     @Id
     private String id;
+
+    @Field(type = FieldType.Text, name = "id")
+    private String userId;
 
     @Field(type = FieldType.Text, name = "name")
     private String name;
@@ -34,6 +37,7 @@ public class UserModel {
     public String toString() {
         return "UserModel{" +
                 "id='" + id + '\'' +
+                ", userId='" + userId + '\'' +
                 ", name='" + name + '\'' +
                 ", age=" + age +
                 ", bir=" + bir +
@@ -47,6 +51,14 @@ public class UserModel {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getName() {

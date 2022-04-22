@@ -56,11 +56,11 @@ public class TestDocument {
         request.timeout(TimeValue.timeValueSeconds(10)); // 设置超时时间
 
         UserModel model = new UserModel();
-        model.setId("daZhaoLiu");
-        model.setName("大赵六");
-        model.setAge(69);
+        model.setId("zhangWanSen");
+        model.setName("张万森");
+        model.setAge(50);
         model.setBir(new Date());
-        model.setAddress("中国深圳");
+        model.setAddress("北京市海淀区");
 
         request.source(JSONObject.toJSONString(model), XContentType.JSON);
 
@@ -172,7 +172,7 @@ public class TestDocument {
      */
     @Test
     public void testGetDocument() throws IOException {
-        GetRequest getRequest = new GetRequest("jason_doc_10", "TQzkIoAB0sa_iFrDpdgu");
+        GetRequest getRequest = new GetRequest("jason_doc_10", "MGaqNoABfXKo_Zq7mfma");
         boolean exists = client.exists(getRequest, RequestOptions.DEFAULT);
         if (exists) {
             GetResponse response = client.get(getRequest, RequestOptions.DEFAULT);

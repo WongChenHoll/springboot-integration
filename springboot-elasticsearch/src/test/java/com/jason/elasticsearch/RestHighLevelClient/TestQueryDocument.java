@@ -4,10 +4,17 @@ import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.client.core.CountRequest;
+import org.elasticsearch.index.query.MatchAllQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.Aggregation;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.metrics.ParsedCardinality;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.collapse.CollapseBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +22,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * 使用客户端的方式进行document文档的各种查询
@@ -31,6 +39,23 @@ public class TestQueryDocument {
 
     /**
      * 分页查询全部
+     * <pre>
+     *  GET /jason_doc_10/_search
+     *  {
+     *      "query": {
+     *        "match_all": {}
+     *       },
+     *       "from": 0,
+     *      "size": 20,
+     *      "sort": [
+     *      {
+     *           "age": {
+     *           "order": "desc"
+     *           }
+     *      }
+     *      ]
+     *  }
+     * </pre>
      */
     @Test
     public void testQueryAll() throws IOException {
@@ -47,6 +72,7 @@ public class TestQueryDocument {
         request.source(builder);
         // 查询
         SearchResponse response = client.search(request, RequestOptions.DEFAULT);
+        System.out.println("总数：" + response.getHits().getTotalHits());
         for (SearchHit hit : response.getHits()) {
             System.out.println("查询结果：" + hit.getSourceAsString());
         }
@@ -54,6 +80,16 @@ public class TestQueryDocument {
 
     /**
      * 模糊查询：wildcardQuery
+     * <pre>
+     *          GET /jason_doc_10/_search
+     *          {
+     *              "query": {
+     *              "wildcard": {
+     *                  "name": "*四*"
+     *               }
+     *             }
+     *          }
+     * </pre>
      */
     @Test
     public void testLikeQuery() throws IOException {
@@ -76,7 +112,18 @@ public class TestQueryDocument {
 
     /**
      * <pre>
-     *     matchQuery 查询，会将搜索词分词，再与目标查询字段进行匹配，若分词中的任意一个词与目标字段匹配上，则可查询到。
+     *     matchQuery 查询，会将搜索词分词，再与目标查询字段进行匹配，
+     *     若分词中的任意一个词与目标字段匹配上，则可查询到。
+     * </pre>
+     * <pre>
+     *      GET /jason_doc_10/_search
+     *      {
+     *          "query": {
+     *          "match": {
+     *              "address": "上海市"
+     *            }
+     *          }
+     *      }
      * </pre>
      */
     @Test
@@ -99,6 +146,17 @@ public class TestQueryDocument {
 
     /**
      * 默认使用 match_phrase 时会精确匹配查询的短语，需要全部单词和顺序要完全一样，标点符号除外。
+     * 和 matchPhrasePrefixQuery 差不多
+     * <pre>
+     *      GET /jason_doc_10/_search
+     *      {
+     *          "query": {
+     *          "match_phrase": {
+     *              "address": "上海市"
+     *            }
+     *          }
+     *      }
+     * </pre>
      */
     @Test
     public void testMatchPhraseQuery() throws IOException {
@@ -118,6 +176,19 @@ public class TestQueryDocument {
         }
     }
 
+    /**
+     * 使用 matchPhrasePrefixQuery 精确匹配，和 match_phrase 差不多
+     * <pre>
+     *      GET /jason_doc_10/_search
+     *      {
+     *          "query": {
+     *          "match_phrase_prefix": {
+     *              "address": "上海市"
+     *            }
+     *          }
+     *      }
+     * </pre>
+     */
     @Test
     public void testMatchPhrasePrefixQuery() throws IOException {
         // 创建查询请求
@@ -138,6 +209,20 @@ public class TestQueryDocument {
 
     /**
      * 使用 multiMatchQuery 进行多个字段匹配查询
+     * <pre>
+     *          GET /jason_doc_10/_search
+     *          {
+     *              "query": {
+     *              "multi_match": {
+     *                  "query": "上海",
+     *                  "fields": [
+     *                  "name",
+     *                  "address"
+     *                  ]
+     *                }
+     *              }
+     *          }
+     * </pre>
      */
     @Test
     public void testMultiMatchQuery() throws IOException {
@@ -157,6 +242,21 @@ public class TestQueryDocument {
         }
     }
 
+    /**
+     * 使用term查询，不会对查询内容进行分词。会将整个作为一个分词。
+     * <pre>
+     *      GET /jason_doc_10/_search
+     * {
+     *   "query": {
+     *     "term": {
+     *       "address": {
+     *         "value": "上海市"
+     *       }
+     *     }
+     *   }
+     * }
+     * </pre>
+     */
     @Test
     public void testTermQuery() throws IOException {
         // 创建查询请求
@@ -164,7 +264,7 @@ public class TestQueryDocument {
         request.indices("jason_doc_10");
         // 创建查询条件
         SearchSourceBuilder builder = new SearchSourceBuilder();
-        builder.query(QueryBuilders.termQuery("address", "中国"));
+        builder.query(QueryBuilders.termQuery("address", "上海市"));
         request.source(builder);
         // 查询
         SearchResponse response = client.search(request, RequestOptions.DEFAULT);
@@ -177,6 +277,27 @@ public class TestQueryDocument {
 
     /**
      * 使用 boolQuery 和 must
+     * <pre>
+     *          GET /jason_doc_10/_search
+     * {
+     *   "query": {
+     *     "bool": {
+     *       "must": [
+     *         {
+     *           "match": {
+     *             "address": "上海市"
+     *           }
+     *         },
+     *         {
+     *           "match_phrase": {
+     *             "name": "大"
+     *           }
+     *         }
+     *       ]
+     *     }
+     *   }
+     * }
+     * </pre>
      */
     @Test
     public void testBoolQueryMust() throws IOException {
@@ -201,6 +322,27 @@ public class TestQueryDocument {
 
     /**
      * 使用 boolQuery 和 should
+     * <pre>
+     *      GET /jason_doc_10/_search
+     * {
+     *   "query": {
+     *     "bool": {
+     *       "should": [
+     *         {
+     *           "match_phrase": {
+     *             "address": "上海"
+     *           }
+     *         },
+     *         {
+     *           "match_phrase": {
+     *             "name": "大"
+     *           }
+     *         }
+     *       ]
+     *     }
+     *   }
+     * }
+     * </pre>
      */
     @Test
     public void testBoolQueryShould() throws IOException {
@@ -221,5 +363,67 @@ public class TestQueryDocument {
         for (SearchHit hit : hits.getHits()) {
             System.out.println("查询到的数据：" + hit.getSourceAsString());
         }
+    }
+
+    /**
+     * <pre>
+     * 年龄去重后的数量。
+     *      请求：
+     *      GET /jason_doc_10/_search
+     *      {
+     *          "query": {
+     *          "match_all": {}
+     *          },
+     *          "size": 0,
+     *          "aggregations": {
+     *          "u_age": {
+     *              "cardinality": {
+     *              "field": "age"
+     *              }
+     *          }
+     *          }
+     *      }
+     *      结果：
+     *      {
+     *   "took" : 1,
+     *   "timed_out" : false,
+     *   "_shards" : {
+     *     "total" : 1,
+     *     "successful" : 1,
+     *     "skipped" : 0,
+     *     "failed" : 0
+     *   },
+     *   "hits" : {
+     *     "total" : {
+     *       "value" : 13,
+     *       "relation" : "eq"
+     *     },
+     *     "max_score" : null,
+     *     "hits" : [ ]
+     *   },
+     *   "aggregations" : {
+     *     "u_age" : {
+     *       "value" : 12
+     *     }
+     *   }
+     * }
+     * </pre>
+     */
+    @Test
+    public void testCountDistinctByAge() throws IOException {
+        // 创建查询请求
+        SearchRequest request = new SearchRequest();
+        request.indices("jason_doc_10");
+        // 创建查询条件
+        SearchSourceBuilder builder = new SearchSourceBuilder();
+        // 根据年龄去重，并起别名为：u_age
+        builder.aggregation(AggregationBuilders.cardinality("distic_age").field("age"));
+        request.source(builder);
+        // 查询
+        SearchResponse response = client.search(request, RequestOptions.DEFAULT);
+        Aggregations aggregations = response.getAggregations();
+        ParsedCardinality cardinality = (ParsedCardinality) aggregations.asList().get(0);
+        long count = cardinality.getValue();
+        System.out.println("去重后的总数：" + count);
     }
 }
