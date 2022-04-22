@@ -133,4 +133,17 @@ public class TestMapperSelect {
         System.out.println("总数量：" + page.getTotal());
         page.getRecords().forEach(System.out::println);
     }
+
+    @Test
+    public void testPage() {
+        UserModel model = new UserModel();
+        model.setAge(30);
+
+        Page<UserModel> page = new Page<>();
+        page.setSize(5);
+        page.setCurrent(1);
+
+        List<UserModel> list = userMapper.pageList(page, model);
+        list.forEach(System.out::println);
+    }
 }

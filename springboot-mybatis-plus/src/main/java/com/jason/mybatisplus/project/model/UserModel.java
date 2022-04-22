@@ -17,7 +17,7 @@ public class UserModel {
 
     @TableId
     @TableField(value = "ID")
-    private String id; // 主键ID，UUIDv
+    private String id; // 主键ID，UUID
 
     @TableField(value = "USER_ID")
     private String userId; // 用户编号
