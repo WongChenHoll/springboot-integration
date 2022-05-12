@@ -1,0 +1,35 @@
+   PUT jason_account_info
+   {
+     "settings": {
+       "number_of_shards": 1,
+       "number_of_replicas": 0
+     },
+     "mappings": {
+       "dynamic": "false",
+       "properties": {
+         "acct_no": {
+           "type": "keyword"
+         },
+         "acct_name": {
+           "type": "text",
+           "analyzer": "ik_max_word"
+         },
+         "acct_balance": {
+           "type": "double"
+         },
+         "open_bank": {
+           "type": "keyword"
+         },
+         "open_date": {
+           "type": "date",
+           "format": [
+             "yyyy-MM-dd"
+           ]
+         },
+         "remark": {
+           "type": "text",
+           "analyzer": "ik_max_word"
+         }
+       }
+     }
+   }

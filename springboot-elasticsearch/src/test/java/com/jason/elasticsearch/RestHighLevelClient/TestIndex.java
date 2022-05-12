@@ -60,7 +60,7 @@ public class TestIndex {
      */
     @Test
     public void testDeleteIndex() throws IOException {
-        DeleteIndexRequest indexRequest = new DeleteIndexRequest("jason_index_by_testttttt");
+        DeleteIndexRequest indexRequest = new DeleteIndexRequest("jason_user_test");
         AcknowledgedResponse response = restHighLevelClient.indices().delete(indexRequest, RequestOptions.DEFAULT);
         System.out.println("索引是否删除成功：" + response.isAcknowledged());
     }

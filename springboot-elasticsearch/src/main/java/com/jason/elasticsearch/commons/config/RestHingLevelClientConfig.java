@@ -1,10 +1,8 @@
-package com.jason.elasticsearch.config;
+package com.jason.elasticsearch.commons.config;
 
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
-import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
 
@@ -15,16 +13,11 @@ import org.springframework.context.annotation.Bean;
  * @date 2022-4-13 星期三 15:18
  **/
 @SpringBootConfiguration
-public class RestHingLevelClient {
+public class RestHingLevelClientConfig {
 
     @Bean
-    public RestClientBuilder restClientBuilder() {
-        return RestClient.builder(createHttpHost("127.0.0.1:9200"));
-    }
-
-    @Bean
-    public RestHighLevelClient restHighLevelClient(@Autowired RestClientBuilder restClientBuilder) {
-        return new RestHighLevelClient(restClientBuilder);
+    public RestHighLevelClient restHighLevelClient() {
+        return new RestHighLevelClient(RestClient.builder(createHttpHost("127.0.0.1:9200")));
     }
 
     private HttpHost createHttpHost(String ipPort) {
