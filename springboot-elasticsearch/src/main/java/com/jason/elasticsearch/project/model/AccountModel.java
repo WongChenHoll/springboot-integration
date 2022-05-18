@@ -11,6 +11,10 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
@@ -23,9 +27,8 @@ import java.util.Date;
 
 @JSONType(orders = {"acct_no", "acct_name", "acct_balance", "open_bank", "open_date", "remark"})
 @Document(indexName = "jason_account_info")
-public class AccountModel {
+public class AccountModel extends ESBaseModel {
 
-    @Id
     @Field(name = "acct_no", type = FieldType.Keyword)
     private String acctNo; // 账户编号
 
@@ -33,17 +36,28 @@ public class AccountModel {
     private String acctName; // 账户姓名
 
     @Field(name = "acct_balance", type = FieldType.Double)
-    private double acctBalance; // 账户余额
+    private BigDecimal acctBalance; // 账户余额
 
     @Field(name = "open_bank", type = FieldType.Keyword)
     private BankEnum openBank; // 开户行
 
     @Field(name = "open_date", type = FieldType.Date, format = DateFormat.date)
-    private Date openDate; // 开户日期
+    private LocalDate openDate; // 开户日期
 
     @Field(name = "remark", type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
     private String remark; // 账户备注
 
+    public AccountModel() {
+    }
+
+    public AccountModel(String acctNo, String acctName, double acctBalance, BankEnum openBank, LocalDate openDate, String remark) {
+        this.acctNo = acctNo;
+        this.acctName = acctName;
+        this.acctBalance = new BigDecimal(acctBalance);
+        this.openBank = openBank;
+        this.openDate = openDate;
+        this.remark = remark;
+    }
 
     public String toJSONString() {
         return JSON.toJSONString(this, SerializerFeature.SortField, SerializerFeature.WriteMapNullValue);
@@ -54,9 +68,9 @@ public class AccountModel {
         return "AccountModel{" +
                 "acctNo='" + acctNo + '\'' +
                 ", acctName='" + acctName + '\'' +
-                ", acctBalance=" + acctBalance +
+                ", acctBalance=" + acctBalance.toString() +
                 ", openBank=" + openBank +
-                ", openDate=" + DateUtils.formatDate(openDate) +
+                ", openDate=" + openDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) +
                 ", remark='" + remark + '\'' +
                 '}';
     }
@@ -77,12 +91,12 @@ public class AccountModel {
         this.acctName = acctName;
     }
 
-    public double getAcctBalance() {
-        return acctBalance;
+    public String getAcctBalance() {
+        return acctBalance.toString();
     }
 
     public void setAcctBalance(double acctBalance) {
-        this.acctBalance = acctBalance;
+        this.acctBalance = new BigDecimal(acctBalance);
     }
 
     public BankEnum getOpenBank() {
@@ -93,11 +107,11 @@ public class AccountModel {
         this.openBank = openBank;
     }
 
-    public Date getOpenDate() {
+    public LocalDate getOpenDate() {
         return openDate;
     }
 
-    public void setOpenDate(Date openDate) {
+    public void setOpenDate(LocalDate openDate) {
         this.openDate = openDate;
     }
 
