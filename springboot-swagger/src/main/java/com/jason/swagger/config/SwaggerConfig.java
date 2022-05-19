@@ -13,10 +13,10 @@ import springfox.documentation.spring.web.plugins.Docket;
 /**
  * 注意：
  * 3.0.0之前版本需使用@EnableSwagger2注解
- * 3.0.0版本则不需要@EnableSwagger2注解，取而代之是@EnableOpenApi
+ * 3.0.0之后的版本则不需要@EnableSwagger2注解，取而代之是 @EnableOpenApi
  * <p/>
  * 3.0.0之前的版本访问是：/swagger-ui.html
- * 3.0.0版本访问是：/swagger-ui/index.html
+ * 3.0.0之后的版本访问是：/swagger-ui/index.html
  *
  * @author WongChenHoll
  * @date 2022-4-8 11:04
